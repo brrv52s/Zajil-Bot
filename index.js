@@ -1,4 +1,14 @@
-const { Client, GatewayIntentBits, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonStyle } = require('discord.js');
+const { 
+  Client, 
+  GatewayIntentBits, 
+  EmbedBuilder, 
+  ButtonBuilder, 
+  ActionRowBuilder, 
+  ModalBuilder, 
+  TextInputBuilder, 
+  TextInputStyle, 
+  ButtonStyle 
+} = require('discord.js');
 
 const client = new Client({
   intents: [
@@ -8,13 +18,15 @@ const client = new Client({
   ],
 });
 
+const logChannelId = 'id'; // حط ID اللوق هنا 
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   console.log('Bot Developed By : .52s');
 });
 
 client.on('messageCreate', async (message) => {
-  if (message.content === '!zajil') { //الأمر الي تستخدمه
+  if (message.content === '!zajil') { // الأمر الي تكتبه 
     const embed = new EmbedBuilder()
       .setColor('#2f3136')
       .setAuthor({
@@ -23,7 +35,7 @@ client.on('messageCreate', async (message) => {
       })
       .setTitle('إرسال زاجل')
       .setDescription('تقدر ترسل رسالة خاصة لأي شخص بالسيرفر بدون ما يعرف من اللي أرسلها، أضغط على زر إرسال زاجل')
-      .setFooter({ text: 'Developed By : @.52s' })
+      .setFooter({ text: 'Developed By : .52s' })
       .setTimestamp();
 
     const button = new ButtonBuilder()
@@ -72,8 +84,35 @@ client.on('interactionCreate', async (interaction) => {
 
       try {
         const user = await client.users.fetch(userId);
-        await user.send(`🕊 عندك رسالة زاجل مجهولة :\n\n${message}`);
+        const embed = new EmbedBuilder()
+          .setColor('#3c3c3c')
+          .setTitle('🕊 رسالة زاجل')
+          .setDescription(message)
+          .setFooter({ text: 'تم إرسال هذه الرسالة بشكل مجهول' })
+          .setTimestamp();
+
+        
+        await user.send({ content: `<@${userId}>`, embeds: [embed] });
+
         await interaction.reply({ content: '✅ تم إرسال الزاجل بنجاح', ephemeral: true });
+
+        
+        const logChannel = client.channels.cache.get(logChannelId);
+        if (logChannel) {
+          const logEmbed = new EmbedBuilder()
+            .setColor('#3c3c3c')
+            .setTitle('📩 سجل رسائل الزاجل')
+            .addFields(
+              { name: '👤 المرسل', value: `<@${interaction.user.id}>`, inline: true },
+              { name: '📤 المستلم', value: `<@${userId}>`, inline: true },
+              { name: '⏰ وقت الإرسال', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false },
+              { name: '✉️ محتوى الرسالة', value: message, inline: false }
+            )
+            .setFooter({ text: `User ID: ${interaction.user.id}` })
+            .setTimestamp();
+
+          await logChannel.send({ embeds: [logEmbed] });
+        }
       } catch (error) {
         if (error.code === 50007) {
           await interaction.reply({ content: '⚠️ ما أقدر أرسل الرسالة، شكل الشخص مقفل الخاص عنده', ephemeral: true });
