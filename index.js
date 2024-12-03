@@ -86,7 +86,7 @@ client.on('interactionCreate', async (interaction) => {
         const user = await client.users.fetch(userId);
         const embed = new EmbedBuilder()
           .setColor('#3c3c3c')
-          .setTitle('🕊 رسالة زاجل')
+          .setTitle('🕊 لديك رسالة زاجل')
           .setDescription(message)
           .setFooter({ text: 'تم إرسال هذه الرسالة بشكل مجهول' })
           .setTimestamp();
