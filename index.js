@@ -18,15 +18,14 @@ const client = new Client({
   ],
 });
 
-const logChannelId = 'id'; // حط ID اللوق هنا 
+const logChannelId = 'id'; // id روم اللوق
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  console.log('Bot Developed By : .52s');
 });
 
 client.on('messageCreate', async (message) => {
-  if (message.content === '!zajil') { // الأمر الي تكتبه 
+  if (message.content === '!zajil') { // الأمر الي تكتبه
     const embed = new EmbedBuilder()
       .setColor('#2f3136')
       .setAuthor({
@@ -35,7 +34,7 @@ client.on('messageCreate', async (message) => {
       })
       .setTitle('إرسال زاجل')
       .setDescription('تقدر ترسل رسالة خاصة لأي شخص بالسيرفر بدون ما يعرف من اللي أرسلها، أضغط على زر إرسال زاجل')
-      .setFooter({ text: 'Developed By : .52s' })
+      .setFooter({ text: 'zajil' })
       .setTimestamp();
 
     const button = new ButtonBuilder()
@@ -60,7 +59,7 @@ client.on('interactionCreate', async (interaction) => {
         .setCustomId('user_id')
         .setLabel('أكتب ID الشخص')
         .setStyle(TextInputStyle.Short)
-        .setPlaceholder('مثال : 123456789012345678')
+        .setPlaceholder('مثال : 86354338013570')
         .setRequired(true);
 
       const messageInput = new TextInputBuilder()
@@ -125,4 +124,4 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-client.login('توكن البوت حقك');
+client.login('توكن البوت');
