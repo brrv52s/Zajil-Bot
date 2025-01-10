@@ -1,5 +1,5 @@
 {
-  "name": "nodejs",
+  "name": "zajil bot",
   "version": "1.0.0",
   "description": "zajil bot can send messages anonymous",
   "main": "index.js",
